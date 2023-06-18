@@ -63,14 +63,14 @@ const columns: GridColDef[] = [
     renderCell: (params) => {
       return (
         <RowFormActionWrapper>
-          <RowFormAction inputColor="#004A91" href={`/forms/edit/${params.row.id}`}>
+          <RowFormAction inputcolor="#004A91" href={`/forms/edit/${params.row.id}`}>
             <Image src={'/assets/svgs/pencil.svg'} width={13} height={13} alt="edit" />
           </RowFormAction>
-          <RowFormAction inputColor="#FFFFFF" href={'/'}>
+          <RowFormAction inputcolor="#FFFFFF" href={'/'}>
             <Image src={'/assets/svgs/view.svg'} width={13} height={13} alt="edit" />
           </RowFormAction>
           {params.row.status === 'approved' && (
-            <RowFormAction inputColor="#DCAC00" href={'/'}>
+            <RowFormAction inputcolor="#DCAC00" href={'/'}>
               <Image src={'/assets/svgs/download.svg'} width={13} height={13} alt="edit" />
             </RowFormAction>
           )}
@@ -194,12 +194,12 @@ const RowFormStatus = styled.p<{ status: string }>`
   color: ${(props) => (props.status === 'pending' ? '#1FE08F' : '#FFC107')};
 `
 
-const RowFormAction = styled(Link)<{ inputColor?: string }>`
+const RowFormAction = styled(Link)<{ inputcolor?: string }>`
   box-shadow: 3px 3px 16px rgba(0, 0, 0, 0.2);
   border-radius: 1px;
   width: 30px;
   height: 30px;
-  background-color: ${(props) => props.inputColor || '#004A91'};
+  background-color: ${(props) => props.inputcolor || '#004A91'};
   cursor: pointer;
   display: flex;
   justify-content: center;
