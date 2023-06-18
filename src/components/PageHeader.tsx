@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import Image from 'next/image'
 import { FC, ReactNode } from 'react'
 import styled from 'styled-components'
@@ -11,7 +12,13 @@ interface PageHeaderProps {
 
 const PageHeader: FC<PageHeaderProps> = ({ title, description, hasAction, actions }) => {
   return (
-    <PageHeaderWrapper>
+    <PageHeaderWrapper
+      flexDirection={{
+        xs: 'column',
+        md: 'row',
+      }}
+      display={'flex'}
+    >
       <FlexRow>
         <PageIcon>
           <Image src="/assets/svgs/form-icon.svg" width={28} height={28} alt="details" />
@@ -21,7 +28,16 @@ const PageHeader: FC<PageHeaderProps> = ({ title, description, hasAction, action
           <PageDescription>{description}</PageDescription>
         </PageDetails>
       </FlexRow>
-      {hasAction && <FormAction>{actions}</FormAction>}
+      {hasAction && (
+        <FormAction
+          flexDirection={{
+            xs: 'column',
+            md: 'row',
+          }}
+        >
+          {actions}
+        </FormAction>
+      )}
     </PageHeaderWrapper>
   )
 }
@@ -35,12 +51,13 @@ const FlexRow = styled.div`
   align-items: center;
 `
 
-const PageHeaderWrapper = styled(FlexRow)`
+const PageHeaderWrapper = styled(Box)`
   padding-block: 20px;
   padding-inline: 30px;
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 4px 103px rgba(50, 50, 71, 0.01), 0px 4px 59px rgba(50, 50, 71, 0.06);
   justify-content: space-between;
+  gap: 6px;
 `
 
 const PageDetails = styled.div`
@@ -75,9 +92,8 @@ const PageDescription = styled.span`
   opacity: 0.5;
 `
 
-const FormAction = styled.div`
+const FormAction = styled(Box)`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   gap: 16px;

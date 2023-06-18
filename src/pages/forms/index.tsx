@@ -48,6 +48,7 @@ const columns: GridColDef[] = [
     headerName: 'Status',
     type: 'string',
     maxWidth: 250,
+    minWidth: 190,
     flex: 1,
     sortable: false,
     renderCell: (params) => {

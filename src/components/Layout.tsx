@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Head from 'next/head'
 import { Poppins } from 'next/font/google'
 import Header from './Header'
-import { ThemeProvider, createTheme } from '@mui/material'
+import { Box, ThemeProvider, createTheme } from '@mui/material'
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -29,13 +29,12 @@ const MainWrapper = styled.div`
   position: relative;
 `
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled(Box)`
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-block: 63px;
-  margin-inline: 53px;
 `
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
@@ -51,7 +50,15 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
         <ThemeProvider theme={theme}>
           <MainWrapper>
             <Header />
-            <ContentWrapper>{children}</ContentWrapper>
+            <ContentWrapper
+              marginX={{
+                xs: '16px',
+                sm: '48px',
+                md: '53px',
+              }}
+            >
+              {children}
+            </ContentWrapper>
           </MainWrapper>
         </ThemeProvider>
       </Main>

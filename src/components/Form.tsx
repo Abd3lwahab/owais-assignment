@@ -146,7 +146,13 @@ const Form: FC<FormProps> = ({ title, formHandler, deleteFormHandler }) => {
           <TabPanel value={tabValue} index={2}>
             Certification
           </TabPanel>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8 }}>
+          <Box
+            sx={{ display: 'flex', justifyContent: 'flex-end', mt: 8, gap: '20px' }}
+            flexDirection={{
+              xs: 'column',
+              md: 'row',
+            }}
+          >
             <Link href="/forms" style={{ display: 'contents' }}>
               <FormButton sx={{ border: '1px solid #004a91' }}>Cancel</FormButton>
             </Link>
@@ -155,7 +161,6 @@ const Form: FC<FormProps> = ({ title, formHandler, deleteFormHandler }) => {
                 sx={{
                   backgroundColor: '#c00000',
                   color: '#ffffff',
-                  ml: 2,
                 }}
                 type="button"
                 onClick={deleteFormHandler}
@@ -163,7 +168,7 @@ const Form: FC<FormProps> = ({ title, formHandler, deleteFormHandler }) => {
                 Delete
               </FormButton>
             )}
-            <FormButton sx={{ backgroundColor: '#004A91', color: '#ffffff', ml: 2 }} type="submit">
+            <FormButton sx={{ backgroundColor: '#004A91', color: '#ffffff' }} type="submit">
               Save
             </FormButton>
           </Box>
@@ -180,7 +185,7 @@ const FormButton = styled(Button)`
     border-radius: 0;
     padding: 14px 20px;
     text-transform: capitalize;
-    width: 180px;
+    min-width: 180px;
     font-weight: 600;
     font-size: 16px;
     line-height: 140%;

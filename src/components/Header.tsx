@@ -1,3 +1,4 @@
+import { Box } from '@mui/material'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -5,7 +6,12 @@ import styled from 'styled-components'
 
 const Header: FC = ({}) => {
   return (
-    <HeaderContainer>
+    <HeaderContainer
+      display={{
+        sm: 'flex',
+        xs: 'none',
+      }}
+    >
       <HeaderButton href={'/forms/new'}>Individual Investor</HeaderButton>
       <HeaderIconsWrapper>
         <HeaderIcon src="/assets/svgs/vector.svg" alt="search" width={30} height={30} />
@@ -29,8 +35,7 @@ const Header: FC = ({}) => {
 
 export default Header
 
-const HeaderContainer = styled.div`
-  display: flex;
+const HeaderContainer = styled(Box)`
   justify-content: flex-end;
   align-items: center;
   padding: 23px 20px;
