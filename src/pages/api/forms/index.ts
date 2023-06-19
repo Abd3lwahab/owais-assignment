@@ -1,8 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { getFilePath, readFile, writeFile } from '@/utils/data-storge'
-import { FormDataType } from '@/types/data'
-
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req
 
@@ -22,23 +19,17 @@ const formPostHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const body = req.body
 
-    const filePath = getFilePath()
-    const data = await readFile(filePath)
+    const response = await fetch(process.env.AWS_LAMBDA_API!, {
+      method: 'POST',
+      body: JSON.stringify({ title: body.title }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-    const newForm = {
-      id: data.forms.length + 1,
-      title: body.title,
-      status: 'pending',
-      timestamp: 'June 18, 2023',
+    if (!response.ok) {
+      throw new Error('Error trying to save the file')
     }
-
-    const newForms = [...data.forms, newForm]
-
-    const newData = {
-      forms: newForms,
-    }
-
-    await writeFile(filePath, newData)
 
     res.status(201).json({ message: 'Form data saved successfully' })
   } catch {
@@ -48,11 +39,14 @@ const formPostHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const formGetHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const filePath = getFilePath()
-    const data = await readFile(filePath)
+    const data = await fetch(process.env.AWS_LAMBDA_API!, {
+      method: 'GET',
+    })
+    const dataJson = await data.json()
 
-    res.status(200).json(data)
-  } catch {
-    res.status(500).json({ error: 'Error trying to read the file' })
+    res.status(200).json(dataJson)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: error })
   }
 }

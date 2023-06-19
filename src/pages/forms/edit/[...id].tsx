@@ -5,7 +5,6 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import axios from 'axios'
 import { GetServerSidePropsContext } from 'next'
-import { getFilePath, readFile } from '@/utils/data-storge'
 
 interface SingleFormPageProps {
   form: FormDataType
@@ -60,10 +59,12 @@ export async function getServerSideProps({ params }: GetServerSidePropsContext) 
   try {
     const { id } = params!
 
-    const filePath = getFilePath()
+    const data = await fetch(process.env.AWS_LAMBDA_API!, {
+      method: 'GET',
+    })
+    const dataJson = await data.json()
 
-    const data = await readFile(filePath)
-    const forms = data.forms
+    const forms = dataJson.forms
     const form = forms.find((form: any) => form.id === Number(id))
 
     if (!form) {

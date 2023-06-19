@@ -1,5 +1,3 @@
-import { FormDataType } from '@/types/data'
-import { getFilePath, readFile, writeFile } from '@/utils/data-storge'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -26,20 +24,17 @@ const formDeleteHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       return
     }
 
-    const filePath = getFilePath()
-    const data = await readFile(filePath)
-
-    const updatedForms = data.forms.filter((form: FormDataType) => {
-      if (form.id !== id) {
-        return { ...form }
-      }
+    const response = await fetch(process.env.AWS_LAMBDA_API!, {
+      method: 'DELETE',
+      body: JSON.stringify({ id: id }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
-    const newData = {
-      forms: updatedForms,
+    if (!response.ok) {
+      throw new Error('Error trying to delete the form')
     }
-
-    await writeFile(filePath, newData)
 
     res.status(200).json({ message: 'Form data deleted successfully' })
   } catch (error) {
@@ -53,25 +48,22 @@ const formPutHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const body = req.body
     const id = Number(req.query.id)
 
-    if (!id) {
-      res.status(400).json({ error: 'Missing id' })
+    if (!id || !body.title) {
+      res.status(400).json({ error: 'Missing id or title' })
+      return
     }
 
-    const filePath = getFilePath()
-    const data = await readFile(filePath)
-
-    const updatedForms = data.forms.map((form: FormDataType) => {
-      if (form.id === id) {
-        return { ...form, title: body.title }
-      }
-      return form
+    const response = await fetch(process.env.AWS_LAMBDA_API!, {
+      method: 'PUT',
+      body: JSON.stringify({ id: id, title: body.title }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
-    const newData = {
-      forms: updatedForms,
+    if (!response.ok) {
+      throw new Error('Error trying to delete the form')
     }
-
-    await writeFile(filePath, newData)
 
     res.status(201).json({ message: 'Form data saved successfully' })
   } catch {
